@@ -13,6 +13,7 @@ It runs on port `3000` by default (`http://localhost:3000/odometer/reading`). Th
 ```bash
 cd just-exercise
 npm install
+cp .env.example .env
 npm run dev
 ```
 
