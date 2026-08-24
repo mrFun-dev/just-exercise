@@ -11,7 +11,7 @@ It runs on port `3000` by default (`http://localhost:3000/odometer/reading`). Th
 ## Running it
 
 ```bash
-cd backend-exercise-odometer
+cd just-exercise
 npm install
 npm run dev
 ```
