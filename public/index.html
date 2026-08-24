@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Odometer Reading</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        font-family: system-ui, sans-serif;
+      }
+      body {
+        max-width: 40rem;
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
+      form {
+        display: grid;
+        gap: 0.75rem;
+      }
+      pre {
+        padding: 1rem;
+        overflow: auto;
+        border: 1px solid CanvasText;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Odometer reading</h1>
+    <form id="upload-form">
+      <label>
+        Image
+        <input
+          id="image"
+          name="image"
+          type="file"
+          accept="image/jpeg,image/png"
+          required
+        />
+      </label>
+      <button type="submit">Submit reading</button>
+    </form>
+    <h2>Response</h2>
+    <pre id="response">No request sent yet.</pre>
+    <script>
+      const form = document.getElementById("upload-form");
+      const imageInput = document.getElementById("image");
+      const responseEl = document.getElementById("response");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const file = imageInput.files[0];
+        if (!file) {
+          return;
+        }
+
+        const body = new FormData();
+        body.append("image", file);
+        responseEl.textContent = "Submitting…";
+
+        try {
+          const res = await fetch("/odometer/reading", {
+            method: "POST",
+            body,
+          });
+          const text = await res.text();
+          try {
+            responseEl.textContent = JSON.stringify(JSON.parse(text), null, 2);
+          } catch {
+            responseEl.textContent = text;
+          }
+        } catch (error) {
+          responseEl.textContent =
+            error instanceof Error ? error.message : String(error);
+        }
+      });
+    </script>
+  </body>
+</html>
